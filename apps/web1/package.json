@@ -11,7 +11,11 @@
     "lint": "eslint . --fix"
   },
   "dependencies": {
-    "vue": "^3.5.34"
+    "axios": "^1.16.1",
+    "pinia": "^3.0.4",
+    "vant": "^4.9.24",
+    "vue": "^3.5.34",
+    "vue-router": "^5.0.4"
   },
   "devDependencies": {
     "@repo/eslint-config": "workspace:*",
