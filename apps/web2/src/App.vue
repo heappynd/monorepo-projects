@@ -1,97 +1,83 @@
 <script setup lang="ts">
-import { RouterLink, RouterView } from 'vue-router'
-import HelloWorld from './components/HelloWorld.vue'
+import { RouterLink, RouterView, useRouter } from 'vue-router'
+import { useAuthStore } from '@/stores/auth'
 
-// const count = 0
+const router = useRouter()
+const authStore = useAuthStore()
+
+function handleLogout() {
+  authStore.logout()
+  router.push('/login')
+}
 </script>
 
 <template>
-  <header>
-    <img
-      alt="Vue logo"
-      class="logo"
-      src="@/assets/logo.svg"
-      width="125"
-      height="125"
-    >
-
-    <div class="wrapper">
-      <HelloWorld msg="You did it!" />
-
-      <nav v-for="i in 5" :key="i">
+  <el-container>
+    <el-header>
+      <nav class="nav-menu">
         <RouterLink to="/">
-          Home
+          首页
         </RouterLink>
         <RouterLink to="/about">
-          About
+          关于
+        </RouterLink>
+        <template v-if="authStore.token">
+          <RouterLink to="/profile">
+            个人中心
+          </RouterLink>
+          <el-button type="text" @click="handleLogout">
+            退出登录
+          </el-button>
+        </template>
+        <RouterLink v-else to="/login">
+          登录
         </RouterLink>
       </nav>
-    </div>
-  </header>
+    </el-header>
 
-  <RouterView />
+    <el-main>
+      <RouterView />
+    </el-main>
+  </el-container>
 </template>
 
 <style scoped>
-header {
-  line-height: 1.5;
-  max-height: 100vh;
+.el-header {
+  background-color: #409eff;
+  display: flex;
+  align-items: center;
+  padding: 0 20px;
 }
 
-.logo {
-  display: block;
-  margin: 0 auto 2rem;
+.nav-menu {
+  display: flex;
+  align-items: center;
+  gap: 20px;
 }
 
-nav {
-  width: 100%;
-  font-size: 12px;
-  text-align: center;
-  margin-top: 2rem;
+.nav-menu a {
+  color: #fff;
+  text-decoration: none;
+  font-size: 14px;
 }
 
-nav a.router-link-exact-active {
-  color: var(--color-text);
+.nav-menu a:hover {
+  color: #ecf5ff;
 }
 
-nav a.router-link-exact-active:hover {
-  background-color: transparent;
+.nav-menu a.router-link-exact-active {
+  color: #ffd04b;
 }
 
-nav a {
-  display: inline-block;
-  padding: 0 1rem;
-  border-left: 1px solid var(--color-border);
+.nav-menu .el-button {
+  color: #fff;
 }
 
-nav a:first-of-type {
-  border: 0;
+.nav-menu .el-button:hover {
+  color: #ffd04b;
 }
 
-@media (min-width: 1024px) {
-  header {
-    display: flex;
-    place-items: center;
-    padding-right: calc(var(--section-gap) / 2);
-  }
-
-  .logo {
-    margin: 0 2rem 0 0;
-  }
-
-  header .wrapper {
-    display: flex;
-    place-items: flex-start;
-    flex-wrap: wrap;
-  }
-
-  nav {
-    text-align: left;
-    margin-left: -1rem;
-    font-size: 1rem;
-
-    padding: 1rem 0;
-    margin-top: 1rem;
-  }
+.el-main {
+  min-height: calc(100vh - 60px);
 }
 </style>
