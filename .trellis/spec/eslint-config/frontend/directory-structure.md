@@ -1,54 +1,58 @@
-# Directory Structure
+# Directory Structure — @repo/eslint-config
 
-> How frontend code is organized in this project.
-
----
-
-## Overview
-
-<!--
-Document your project's frontend directory structure here.
-
-Questions to answer:
-- Where do components live?
-- How are features/modules organized?
-- Where are shared utilities?
-- How are assets organized?
--->
-
-(To be filled by the team)
+> Package layout for the shared ESLint config.
 
 ---
 
 ## Directory Layout
 
 ```
-<!-- Replace with your actual structure -->
-src/
-├── ...
-└── ...
+packages/eslint-config/
+├── base.js              # Main config export (antfu + Vue + formatters)
+├── package.json         # Package manifest with exports
+└── node_modules/        # Dependencies
 ```
 
 ---
 
-## Module Organization
+## Package Configuration
 
-<!-- How should new features be organized? -->
+```json
+{
+  "name": "@repo/eslint-config",
+  "type": "module",
+  "exports": {
+    "./base": "./base.js"
+  }
+}
+```
 
-(To be filled by the team)
+Reference: `packages/eslint-config/package.json`
 
 ---
 
-## Naming Conventions
+## Base Config
 
-<!-- File and folder naming rules -->
+The single export `base.js` creates an `@antfu/eslint-config` instance with Vue and formatters enabled:
 
-(To be filled by the team)
+```javascript
+import antfu from '@antfu/eslint-config'
+
+export const config = antfu({
+  formatters: true,
+  vue: true,
+})
+```
+
+Reference: `packages/eslint-config/base.js`
 
 ---
 
-## Examples
+## Adding New Configs
 
-<!-- Link to well-organized modules as examples -->
+When adding new config variants (e.g., `./node` for Node.js apps):
 
-(To be filled by the team)
+1. Create new file: `packages/eslint-config/node.js`
+2. Add export in `package.json`: `"./node": "./node.js"`
+3. Update this spec
+4. Test against consuming apps

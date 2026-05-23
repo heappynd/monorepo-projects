@@ -1,51 +1,18 @@
-# Hook Guidelines
+# Hook Guidelines — @repo/eslint-config
 
-> How hooks are used in this project.
-
----
-
-## Overview
-
-<!--
-Document your project's hook conventions here.
-
-Questions to answer:
-- What custom hooks do you have?
-- How do you handle data fetching?
-- What are the naming conventions?
-- How do you share stateful logic?
--->
-
-(To be filled by the team)
+> Not applicable for this package.
 
 ---
 
-## Custom Hook Patterns
+## Status
 
-<!-- How to create and structure custom hooks -->
+This file exists to complete the spec template but **does not apply** to the `@repo/eslint-config` package. ESLint configs do not have hooks or composables.
 
-(To be filled by the team)
-
----
-
-## Data Fetching
-
-<!-- How data fetching is handled (React Query, SWR, etc.) -->
-
-(To be filled by the team)
+The shared ESLint config is a configuration package, not a runtime library. It exports a single ESLint config object.
 
 ---
 
-## Naming Conventions
+## See Instead
 
-<!-- Hook naming rules (use*, etc.) -->
-
-(To be filled by the team)
-
----
-
-## Common Mistakes
-
-<!-- Hook-related mistakes your team has made -->
-
-(To be filled by the team)
+- [Quality Guidelines](./quality-guidelines.md) — ESLint rules enforced by this config
+- [Component Guidelines](./component-guidelines.md) — Vue component linting rules

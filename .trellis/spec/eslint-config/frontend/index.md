@@ -1,39 +1,66 @@
-# Frontend Development Guidelines
+# Shared ESLint Config Guidelines
 
-> Best practices for frontend development in this project.
+> Conventions for the `@repo/eslint-config` shared package.
 
 ---
 
 ## Overview
 
-This directory contains guidelines for frontend development. Fill in each file with your project's specific conventions.
+`@repo/eslint-config` (`packages/eslint-config`) provides **shared ESLint configuration** for all frontend apps in this Turborepo. It uses `@antfu/eslint-config` as the base with Vue and formatter support.
 
 ---
 
 ## Guidelines Index
 
-| Guide | Description | Status |
-|-------|-------------|--------|
-| [Directory Structure](./directory-structure.md) | Module organization and file layout | To fill |
-| [Component Guidelines](./component-guidelines.md) | Component patterns, props, composition | To fill |
-| [Hook Guidelines](./hook-guidelines.md) | Custom hooks, data fetching patterns | To fill |
-| [State Management](./state-management.md) | Local state, global state, server state | To fill |
-| [Quality Guidelines](./quality-guidelines.md) | Code standards, forbidden patterns | To fill |
-| [Type Safety](./type-safety.md) | Type patterns, validation | To fill |
+| Guide | Description |
+|-------|-------------|
+| [Directory Structure](./directory-structure.md) | Package layout |
+| [Quality Guidelines](./quality-guidelines.md) | ESLint rules and enforcement |
+| [Type Safety](./type-safety.md) | TypeScript linting rules |
+| [Component Guidelines](./component-guidelines.md) | Vue component linting rules |
 
 ---
 
-## How to Fill These Guidelines
+## Tech Stack
 
-For each guideline file:
-
-1. Document your project's **actual conventions** (not ideals)
-2. Include **code examples** from your codebase
-3. List **forbidden patterns** and why
-4. Add **common mistakes** your team has made
-
-The goal is to help AI assistants and new team members understand how YOUR project works.
+| Layer | Technology | Version |
+|-------|-----------|---------|
+| Base Config | @antfu/eslint-config | ^9.0.0 |
+| Vue Plugin | eslint-plugin-vue | ^10.9.1 |
+| TypeScript | typescript-eslint | ^8.59.4 |
+| Formatters | eslint-plugin-format | ^2.0.1 |
+| ESLint | ESLint | ^10.4.0 |
 
 ---
 
-**Language**: All documentation should be written in **English**.
+## Usage
+
+### In Frontend Apps
+
+```javascript
+// eslint.config.js
+import { config } from '@repo/eslint-config/base'
+export default config
+```
+
+Apps using this config: `web1`, `web2`
+
+### Export Path
+
+```json
+{
+  "exports": {
+    "./base": "./base.js"
+  }
+}
+```
+
+Import as: `@repo/eslint-config/base`
+
+---
+
+## Key Conventions
+
+- **Do not** create app-specific ESLint overrides — contribute rules back to this shared config instead
+- **Do not** modify the base config without testing against all consuming apps
+- The backend does NOT use this config — it has its own standalone ESLint setup

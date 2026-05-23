@@ -1,51 +1,102 @@
 # Error Handling
 
-> How errors are handled in this project.
+> How errors are handled in the NestJS backend.
 
 ---
 
 ## Overview
 
-<!--
-Document your project's error handling conventions here.
-
-Questions to answer:
-- What error types do you define?
-- How are errors propagated?
-- How are errors logged?
-- How are errors returned to clients?
--->
-
-(To be filled by the team)
+The backend uses **NestJS built-in exception handling**. Currently there are no custom exception filters or custom error classes — the default NestJS behavior is used.
 
 ---
 
 ## Error Types
 
-<!-- Custom error classes/types -->
+NestJS provides built-in HTTP exceptions. Use these directly:
 
-(To be filled by the team)
+```typescript
+import { NotFoundException, BadRequestException } from '@nestjs/common';
+
+// 404 Not Found
+throw new NotFoundException('User not found');
+
+// 400 Bad Request
+throw new BadRequestException('Invalid input');
+```
+
+Common exceptions:
+- `BadRequestException` (400)
+- `UnauthorizedException` (401)
+- `ForbiddenException` (403)
+- `NotFoundException` (404)
+- `InternalServerErrorException` (500)
 
 ---
 
 ## Error Handling Patterns
 
-<!-- Try-catch patterns, error propagation -->
+### Controller-level
 
-(To be filled by the team)
+Controllers should let service methods throw; NestJS automatically catches exceptions and returns proper HTTP responses.
+
+```typescript
+@Controller('users')
+export class UsersController {
+  constructor(private readonly usersService: UsersService) {}
+
+  @Get(':id')
+  findOne(@Param('id') id: string) {
+    return this.usersService.findOne(id); // Service throws NotFoundException if not found
+  }
+}
+```
+
+### Service-level
+
+Services throw NestJS exceptions when business rules are violated:
+
+```typescript
+@Injectable()
+export class UsersService {
+  findOne(id: string) {
+    const user = this.users.find(u => u.id === id);
+    if (!user) {
+      throw new NotFoundException(`User #${id} not found`);
+    }
+    return user;
+  }
+}
+```
 
 ---
 
 ## API Error Responses
 
-<!-- Standard error response format -->
+NestJS default error response format:
 
-(To be filled by the team)
+```json
+{
+  "statusCode": 404,
+  "message": "User #123 not found",
+  "error": "Not Found"
+}
+```
+
+No custom error response format is currently configured.
 
 ---
 
 ## Common Mistakes
 
-<!-- Error handling mistakes your team has made -->
+- **Catching errors too early**: Let NestJS handle the exception-to-response mapping; don't catch and re-wrap unnecessarily
+- **Returning raw errors**: Never return stack traces or internal details to the client in production
+- **Missing error propagation**: Services should throw, not return `null` silently when a resource isn't found
 
-(To be filled by the team)
+---
+
+## Future Improvements
+
+When the app grows, consider:
+- Custom `ExceptionFilter` for standardized error responses
+- Custom error classes for domain-specific errors
+- Global validation pipe with `class-validator`

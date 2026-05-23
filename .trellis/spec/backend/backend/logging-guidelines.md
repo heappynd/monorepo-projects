@@ -1,51 +1,80 @@
 # Logging Guidelines
 
-> How logging is done in this project.
+> How logging is done in the NestJS backend.
 
 ---
 
 ## Overview
 
-<!--
-Document your project's logging conventions here.
-
-Questions to answer:
-- What logging library do you use?
-- What are the log levels and when to use each?
-- What should be logged?
-- What should NOT be logged (PII, secrets)?
--->
-
-(To be filled by the team)
+The backend uses **NestJS built-in Logger** (`@nestjs/common`). No external logging library is currently configured.
 
 ---
 
 ## Log Levels
 
-<!-- When to use each level: debug, info, warn, error -->
+NestJS Logger provides these levels:
 
-(To be filled by the team)
+| Level | Method | When to Use |
+|-------|--------|-------------|
+| `log` | `logger.log()` | Normal operations, successful actions |
+| `error` | `logger.error()` | Unhandled errors, failures |
+| `warn` | `logger.warn()` | Recoverable issues, deprecations |
+| `debug` | `logger.debug()` | Development-only detailed info |
+| `verbose` | `logger.verbose()` | Very detailed tracing |
 
 ---
 
-## Structured Logging
+## Usage Pattern
 
-<!-- Log format, required fields -->
+### In Services
 
-(To be filled by the team)
+```typescript
+import { Injectable, Logger } from '@nestjs/common';
+
+@Injectable()
+export class AppService {
+  private readonly logger = new Logger(AppService.name);
+
+  getHello(): string {
+    this.logger.log('getHello called');
+    return 'Hello World!';
+  }
+}
+```
+
+### In Controllers
+
+```typescript
+import { Controller, Logger } from '@nestjs/common';
+
+@Controller()
+export class AppController {
+  private readonly logger = new Logger(AppController.name);
+}
+```
 
 ---
 
 ## What to Log
 
-<!-- Important events to log -->
-
-(To be filled by the team)
+- Service method entry for important operations
+- External API calls and their results
+- Errors that are caught and handled
+- Startup and shutdown events
 
 ---
 
 ## What NOT to Log
 
-<!-- Sensitive data, PII, secrets -->
+- **PII**: User emails, passwords, tokens
+- **Secrets**: API keys, database credentials
+- **Request bodies** in full (log summary only)
+- **Verbose data** in production (use `debug` level)
 
-(To be filled by the team)
+---
+
+## Common Mistakes
+
+- **Using `console.log`**: Always use NestJS `Logger` for consistency and log level control
+- **Logging in hot paths**: Avoid logging inside tight loops or frequently-called methods
+- **Missing context**: Always include the class name via `new Logger(ClassName.name)`

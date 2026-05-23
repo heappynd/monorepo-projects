@@ -1,51 +1,68 @@
-# Hook Guidelines
+# Hook Guidelines — web1
 
-> How hooks are used in this project.
-
----
-
-## Overview
-
-<!--
-Document your project's hook conventions here.
-
-Questions to answer:
-- What custom hooks do you have?
-- How do you handle data fetching?
-- What are the naming conventions?
-- How do you share stateful logic?
--->
-
-(To be filled by the team)
+> Composables (Vue "hooks") for the web1 app.
 
 ---
 
-## Custom Hook Patterns
+## Current Status
 
-<!-- How to create and structure custom hooks -->
-
-(To be filled by the team)
+**No custom composables exist yet.** The app uses Vue's built-in `ref` directly.
 
 ---
 
-## Data Fetching
+## When to Create Composables
 
-<!-- How data fetching is handled (React Query, SWR, etc.) -->
-
-(To be filled by the team)
-
----
-
-## Naming Conventions
-
-<!-- Hook naming rules (use*, etc.) -->
-
-(To be filled by the team)
+Extract logic into composables when:
+- Logic is reused across multiple components
+- A component has complex stateful logic (e.g., fetching, timers, subscriptions)
+- You want to unit-test logic independently
 
 ---
 
-## Common Mistakes
+## Naming Convention
 
-<!-- Hook-related mistakes your team has made -->
+Composables follow the `use*` naming pattern:
 
-(To be filled by the team)
+```
+src/composables/
+├── useCounter.ts
+├── useFetch.ts
+└── useAuth.ts
+```
+
+---
+
+## Composable Pattern
+
+```typescript
+// src/composables/useCounter.ts
+import { ref, computed } from 'vue'
+
+export function useCounter(initial = 0) {
+  const count = ref(initial)
+  const doubled = computed(() => count.value * 2)
+
+  function increment() {
+    count.value++
+  }
+
+  return { count, doubled, increment }
+}
+```
+
+```vue
+<!-- In a component -->
+<script setup lang="ts">
+import { useCounter } from '@/composables/useCounter'
+
+const { count, doubled, increment } = useCounter()
+</script>
+```
+
+---
+
+## Anti-patterns
+
+- **Don't** create composables for single-use logic — keep it in the component
+- **Don't** make composables depend on component lifecycle — they should be pure state + logic
+- **Don't** use mixins — composables are the modern replacement

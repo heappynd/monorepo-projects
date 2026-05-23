@@ -1,51 +1,88 @@
-# Type Safety
+# Type Safety — @repo/eslint-config
 
-> Type safety patterns in this project.
+> TypeScript linting rules in the shared ESLint config.
 
 ---
 
 ## Overview
 
-<!--
-Document your project's type safety conventions here.
-
-Questions to answer:
-- What type system do you use?
-- How are types organized?
-- What validation library do you use?
-- How do you handle type inference?
--->
-
-(To be filled by the team)
+The shared config includes `typescript-eslint` for type-aware linting of `.ts` and `.vue` files.
 
 ---
 
-## Type Organization
+## TypeScript Rules
 
-<!-- Where types are defined, shared types vs local types -->
+The `@antfu/eslint-config` base enables these TypeScript patterns:
 
-(To be filled by the team)
+### Enforced
 
----
+- **No unused variables**: Catches typos and dead code
+- **Consistent type imports**: Use `import type` for type-only imports
+- **No explicit `any`**: Warns on `any` usage (configurable per app)
+- **Strict null checks**: Aligns with TypeScript's strict mode
 
-## Validation
+### Relaxed
 
-<!-- Runtime validation patterns (Zod, Yup, io-ts, etc.) -->
-
-(To be filled by the team)
-
----
-
-## Common Patterns
-
-<!-- Type utilities, generics, type guards -->
-
-(To be filled by the team)
+- `@typescript-eslint/no-explicit-any`: May be off in some configs — check `@antfu/eslint-config` defaults
+- `@typescript-eslint/no-floating-promises`: Depends on config variant
 
 ---
 
-## Forbidden Patterns
+## Type Import Convention
 
-<!-- any, type assertions, etc. -->
+Use `import type` for type-only imports:
 
-(To be filled by the team)
+```typescript
+// ✅ Correct — type-only import
+import type { User } from './types'
+
+// ✅ Also correct — value import
+import { createUser } from './users'
+
+// ❌ Avoid — importing type without `type` keyword
+import { User } from './types'  // Only used as a type
+```
+
+---
+
+## Vue + TypeScript
+
+The config enables Vue's TypeScript support for `<script setup lang="ts">`:
+
+- Props typed with `defineProps<T>()`
+- Emits typed with `defineEmits<T>()`
+- Template type checking via `vue-tsc`
+
+---
+
+## App-Specific Overrides
+
+Apps can relax TypeScript rules if needed:
+
+```javascript
+// apps/some-app/eslint.config.js
+import { config } from '@repo/eslint-config/base'
+
+export default [
+  ...config,
+  {
+    rules: {
+      '@typescript-eslint/no-explicit-any': 'off',
+    },
+  },
+]
+```
+
+---
+
+## Verification
+
+```bash
+# Lint specific app
+pnpm --filter web1 run lint
+
+# Type check (separate from ESLint)
+pnpm --filter web1 run check-types
+```
+
+Note: ESLint type rules and `vue-tsc` are complementary — run both.

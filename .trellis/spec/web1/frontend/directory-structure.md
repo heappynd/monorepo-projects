@@ -1,54 +1,70 @@
-# Directory Structure
+# Directory Structure — web1
 
-> How frontend code is organized in this project.
-
----
-
-## Overview
-
-<!--
-Document your project's frontend directory structure here.
-
-Questions to answer:
-- Where do components live?
-- How are features/modules organized?
-- Where are shared utilities?
-- How are assets organized?
--->
-
-(To be filled by the team)
+> How web1 frontend code is organized.
 
 ---
 
 ## Directory Layout
 
 ```
-<!-- Replace with your actual structure -->
-src/
-├── ...
-└── ...
+apps/web1/
+├── src/
+│   ├── main.ts              # App entry point (createApp + mount)
+│   ├── App.vue              # Root component
+│   ├── style.css            # Global styles
+│   ├── assets/              # Static assets (images, icons)
+│   │   ├── hero.png
+│   │   ├── vite.svg
+│   │   └── vue.svg
+│   └── components/          # Vue components
+│       └── HelloWorld.vue   # Main display component
+├── index.html               # HTML entry point
+├── vite.config.ts           # Vite configuration
+├── tsconfig.json            # TypeScript config
+├── tsconfig.app.json        # App-specific TS config
+├── tsconfig.node.json       # Node-specific TS config (Vite config)
+├── eslint.config.js         # Uses @repo/eslint-config/base
+└── package.json
 ```
 
 ---
 
 ## Module Organization
 
-<!-- How should new features be organized? -->
+This is a simple app — components live in `src/components/`. As the app grows:
 
-(To be filled by the team)
+```
+src/
+├── components/              # Shared/reusable components
+├── views/                   # Page-level components (if router added)
+├── composables/             # Vue composables (shared logic)
+├── assets/                  # Static assets
+└── utils/                   # Utility functions
+```
 
 ---
 
 ## Naming Conventions
 
-<!-- File and folder naming rules -->
-
-(To be filled by the team)
+| Type | Pattern | Example |
+|------|---------|---------|
+| Component | PascalCase.vue | `HelloWorld.vue` |
+| Composable | useCamelCase.ts | `useCounter.ts` |
+| Asset | lowercase-with-dashes | `hero.png` |
+| Style | camelCase or kebab-case | `style.css` |
 
 ---
 
-## Examples
+## Entry Point
 
-<!-- Link to well-organized modules as examples -->
+`main.ts` creates the Vue app and mounts it:
 
-(To be filled by the team)
+```typescript
+import { createApp } from 'vue'
+import App from './App.vue'
+import './style.css'
+
+createApp(App).mount('#app')
+```
+
+Reference: `apps/web1/src/main.ts`

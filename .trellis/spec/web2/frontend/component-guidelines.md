@@ -1,59 +1,117 @@
-# Component Guidelines
+# Component Guidelines — web2
 
-> How components are built in this project.
+> Vue 3 component patterns for the web2 app.
 
 ---
 
 ## Overview
 
-<!--
-Document your project's component conventions here.
-
-Questions to answer:
-- What component patterns do you use?
-- How are props defined?
-- How do you handle composition?
-- What accessibility standards apply?
--->
-
-(To be filled by the team)
+All components use **Vue 3 Composition API** with `<script setup lang="ts">` syntax.
 
 ---
 
-## Component Structure
+## Component Types
 
-<!-- Standard structure of a component file -->
+### View Components (`views/`)
 
-(To be filled by the team)
+Route-level components that represent pages. Use the `*View.vue` naming convention.
+
+```vue
+<!-- views/HomeView.vue -->
+<script setup lang="ts">
+import TheWelcome from '@/components/TheWelcome.vue'
+</script>
+
+<template>
+  <main>
+    <TheWelcome />
+  </main>
+</template>
+```
+
+Reference: `apps/web2/src/views/HomeView.vue`
+
+### Reusable Components (`components/`)
+
+Presentational components that can be used anywhere. Use PascalCase naming.
+
+```vue
+<!-- components/HelloWorld.vue -->
+<script setup lang="ts">
+defineProps<{
+  msg: string
+}>()
+</script>
+```
+
+Reference: `apps/web2/src/components/HelloWorld.vue`
+
+### Layout Components
+
+Components like `WelcomeItem.vue` that provide structure with slots:
+
+```vue
+<!-- components/WelcomeItem.vue -->
+<template>
+  <div class="item">
+    <i><slot name="icon" /></i>
+    <div class="details">
+      <h3><slot name="heading" /></h3>
+      <slot />
+    </div>
+  </div>
+</template>
+```
+
+Reference: `apps/web2/src/components/WelcomeItem.vue`
 
 ---
 
-## Props Conventions
+## Props
 
-<!-- How props should be defined and typed -->
+Use TypeScript-based `defineProps`:
 
-(To be filled by the team)
-
----
-
-## Styling Patterns
-
-<!-- How styles are applied (CSS modules, styled-components, Tailwind, etc.) -->
-
-(To be filled by the team)
+```vue
+<script setup lang="ts">
+defineProps<{
+  msg: string
+}>()
+</script>
+```
 
 ---
 
-## Accessibility
+## Slots
 
-<!-- A11y requirements and patterns -->
+Use named slots for flexible component composition:
 
-(To be filled by the team)
+```vue
+<template>
+  <WelcomeItem>
+    <template #icon>
+      <DocumentationIcon />
+    </template>
+    <template #heading>
+      Documentation
+    </template>
+    Content goes here...
+  </WelcomeItem>
+</template>
+```
 
 ---
 
-## Common Mistakes
+## Component Structure Order
 
-<!-- Component-related mistakes your team has made -->
+1. `<script setup lang="ts">`
+2. `<template>`
+3. `<style scoped>`
 
-(To be filled by the team)
+---
+
+## Anti-patterns
+
+- **Don't** use Options API
+- **Don't** put route-level logic in `components/` — use `views/` for that
+- **Don't** use global component registration
+- **Don't** use unscoped styles unless intentionally global

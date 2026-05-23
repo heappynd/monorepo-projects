@@ -4,48 +4,82 @@
 
 ---
 
-## Overview
+## Current Status
 
-<!--
-Document your project's database conventions here.
-
-Questions to answer:
-- What ORM/query library do you use?
-- How are migrations managed?
-- What are the naming conventions for tables/columns?
-- How do you handle transactions?
--->
-
-(To be filled by the team)
+**No database is currently configured.** The backend is a scaffolded NestJS application with no ORM or database connection.
 
 ---
 
-## Query Patterns
+## When Adding a Database
 
-<!-- How should queries be written? Batch operations? -->
+Recommended stack for this project:
 
-(To be filled by the team)
+| Concern | Recommended | Why |
+|---------|------------|-----|
+| ORM | TypeORM or Prisma | NestJS has first-class TypeORM integration; Prisma is also popular |
+| Database | PostgreSQL | Common choice for NestJS projects |
+| Migrations | ORM CLI | Both TypeORM and Prisma have migration CLIs |
 
 ---
 
-## Migrations
+## NestJS + TypeORM Pattern (Reference)
 
-<!-- How to create and run migrations -->
+If TypeORM is chosen, the pattern is:
 
-(To be filled by the team)
+```typescript
+// app.module.ts
+import { TypeOrmModule } from '@nestjs/typeorm';
+
+@Module({
+  imports: [
+    TypeOrmModule.forRoot({
+      type: 'postgres',
+      host: process.env.DB_HOST,
+      port: parseInt(process.env.DB_PORT ?? '5432'),
+      username: process.env.DB_USER,
+      password: process.env.DB_PASS,
+      database: process.env.DB_NAME,
+      autoLoadEntities: true,
+      synchronize: process.env.NODE_ENV !== 'production',
+    }),
+  ],
+})
+export class AppModule {}
+```
+
+```typescript
+// user.entity.ts
+import { Entity, PrimaryGeneratedColumn, Column } from 'typeorm';
+
+@Entity()
+export class User {
+  @PrimaryGeneratedColumn()
+  id: number;
+
+  @Column()
+  name: string;
+
+  @Column({ unique: true })
+  email: string;
+}
+```
 
 ---
 
 ## Naming Conventions
 
-<!-- Table names, column names, index names -->
-
-(To be filled by the team)
+| Type | Convention | Example |
+|------|-----------|---------|
+| Entity | PascalCase, singular | `User`, `Post` |
+| Table | snake_case, plural | `users`, `posts` |
+| Column | snake_case | `created_at`, `user_id` |
+| Migration | timestamp prefix | `1234567890-CreateUsers.ts` |
 
 ---
 
 ## Common Mistakes
 
-<!-- Database-related mistakes your team has made -->
-
-(To be filled by the team)
+- **Using `synchronize: true` in production**: Always use migrations in production
+- **N+1 queries**: Use `relations` or `JOIN` to fetch related data in one query
+- **Missing indexes**: Add indexes on frequently queried columns
+- **Storing secrets in code**: Use environment variables for connection strings

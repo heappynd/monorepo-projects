@@ -1,59 +1,85 @@
-# Component Guidelines
+# Component Guidelines — @repo/eslint-config
 
-> How components are built in this project.
+> Vue component linting rules in the shared ESLint config.
 
 ---
 
 ## Overview
 
-<!--
-Document your project's component conventions here.
-
-Questions to answer:
-- What component patterns do you use?
-- How are props defined?
-- How do you handle composition?
-- What accessibility standards apply?
--->
-
-(To be filled by the team)
+The shared config enables `eslint-plugin-vue` with Vue 3 recommended rules, enforcing consistent component patterns across all frontend apps.
 
 ---
 
-## Component Structure
+## Enforced Vue Rules
 
-<!-- Standard structure of a component file -->
+### Component Structure
 
-(To be filled by the team)
+- **`<script setup>` required**: The config prefers Composition API with `<script setup>` over Options API
+- **Single-file component order**: Script → Template → Style (configurable)
+- **Component naming**: PascalCase for component names and filenames
 
----
+### Template Rules
 
-## Props Conventions
+- **No text interpolation in `<template>`**: Use `{{ }}` only for data binding
+- **Self-closing components**: Empty components should be self-closing
+- **Attribute quoting**: Consistent quote style in templates
 
-<!-- How props should be defined and typed -->
+### Props
 
-(To be filled by the team)
-
----
-
-## Styling Patterns
-
-<!-- How styles are applied (CSS modules, styled-components, Tailwind, etc.) -->
-
-(To be filled by the team)
+- **Type-based `defineProps`**: Prefer `defineProps<T>()` over runtime declaration
+- **Required props**: Should be explicitly marked
 
 ---
 
-## Accessibility
+## Recommended Patterns
 
-<!-- A11y requirements and patterns -->
+```vue
+<!-- ✅ Correct — Composition API with script setup -->
+<script setup lang="ts">
+defineProps<{
+  msg: string
+}>()
+</script>
 
-(To be filled by the team)
+<template>
+  <div>{{ msg }}</div>
+</template>
+
+<style scoped>
+/* styles */
+</style>
+```
+
+```vue
+<!-- ❌ Avoid — Options API -->
+<script lang="ts">
+export default {
+  props: {
+    msg: String,
+  },
+}
+</script>
+```
 
 ---
 
-## Common Mistakes
+## Linting Vue Files
 
-<!-- Component-related mistakes your team has made -->
+The shared config handles `.vue` files automatically via `eslint-plugin-vue`:
 
-(To be filled by the team)
+```bash
+# Lint all Vue files in an app
+pnpm --filter web1 run lint
+pnpm --filter web2 run lint
+```
+
+---
+
+## Common Violations
+
+| Violation | Fix |
+|-----------|-----|
+| Options API usage | Convert to `<script setup>` |
+| Missing `lang="ts"` | Add `lang="ts"` to `<script>` |
+| Unscoped styles | Add `scoped` to `<style>` |
+| Inline complex logic | Extract to method or composable |

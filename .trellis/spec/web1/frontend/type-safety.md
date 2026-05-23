@@ -1,51 +1,91 @@
-# Type Safety
+# Type Safety — web1
 
-> Type safety patterns in this project.
+> TypeScript patterns in the web1 Vue app.
 
 ---
 
 ## Overview
 
-<!--
-Document your project's type safety conventions here.
-
-Questions to answer:
-- What type system do you use?
-- How are types organized?
-- What validation library do you use?
-- How do you handle type inference?
--->
-
-(To be filled by the team)
+web1 uses **TypeScript ~6.0.2** with **vue-tsc ^3.2.8** for type checking Vue single-file components.
 
 ---
 
-## Type Organization
+## Component Props
 
-<!-- Where types are defined, shared types vs local types -->
+Always use the type-based `defineProps`:
 
-(To be filled by the team)
+```vue
+<script setup lang="ts">
+// ✅ Correct — type-based props
+defineProps<{
+  msg: string
+  count?: number
+  items?: string[]
+}>()
+</script>
+```
+
+```vue
+<script setup lang="ts">
+// ❌ Avoid — runtime declaration (less type-safe)
+defineProps({
+  msg: String,
+  count: Number,
+})
+</script>
+```
 
 ---
 
-## Validation
+## Refs and Reactivity
 
-<!-- Runtime validation patterns (Zod, Yup, io-ts, etc.) -->
+Type inference works well with `ref`; explicit types when needed:
 
-(To be filled by the team)
+```typescript
+import { ref, computed } from 'vue'
+
+// Type inferred as Ref<number>
+const count = ref(0)
+
+// Explicit type for complex cases
+interface User {
+  id: number
+  name: string
+}
+const user = ref<User | null>(null)
+```
 
 ---
 
-## Common Patterns
+## Event Handling
 
-<!-- Type utilities, generics, type guards -->
+Type events in template handlers:
 
-(To be filled by the team)
+```vue
+<script setup lang="ts">
+function handleClick(event: MouseEvent) {
+  console.log(event.target)
+}
+</script>
+
+<template>
+  <button @click="handleClick">Click</button>
+</template>
+```
 
 ---
 
-## Forbidden Patterns
+## tsconfig Setup
 
-<!-- any, type assertions, etc. -->
+The app uses three TypeScript configs:
+- `tsconfig.json` — base config referencing the others
+- `tsconfig.app.json` — app source code (Vue components, TS files)
+- `tsconfig.node.json` — Node environment (Vite config files)
 
-(To be filled by the team)
+---
+
+## Common Mistakes
+
+- **Not running `check-types`**: Always run `pnpm --filter web1 run check-types` before committing
+- **Using `any`**: The lint config may allow it, but prefer proper types
+- **Missing `lang="ts"`**: Always include `lang="ts"` in `<script setup>`

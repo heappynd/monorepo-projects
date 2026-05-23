@@ -1,51 +1,55 @@
-# State Management
+# State Management — web1
 
-> How state is managed in this project.
-
----
-
-## Overview
-
-<!--
-Document your project's state management conventions here.
-
-Questions to answer:
-- What state management solution do you use?
-- How is local vs global state decided?
-- How do you handle server state?
-- What are the patterns for derived state?
--->
-
-(To be filled by the team)
+> How state is managed in the web1 app.
 
 ---
 
-## State Categories
+## Current Approach
 
-<!-- Local state, global state, server state, URL state -->
-
-(To be filled by the team)
+web1 uses **local component state only** with Vue's `ref()`. There is no global state management library.
 
 ---
 
-## When to Use Global State
+## Pattern
 
-<!-- Criteria for promoting state to global -->
+```vue
+<script setup lang="ts">
+import { ref } from 'vue'
 
-(To be filled by the team)
+const count = ref(0)
+</script>
+
+<template>
+  <button @click="count++">Count is {{ count }}</button>
+</template>
+```
+
+Reference: `apps/web1/src/components/HelloWorld.vue`
 
 ---
 
-## Server State
+## When to Add Global State
 
-<!-- How server data is cached and synchronized -->
-
-(To be filled by the team)
+Consider adding Pinia when:
+- Multiple unrelated components need the same data
+- State needs to persist across route changes (if router is added)
+- Complex state logic needs to be shared and tested
 
 ---
 
-## Common Mistakes
+## State Patterns to Use
 
-<!-- State management mistakes your team has made -->
+| Need | Solution |
+|------|----------|
+| Component-local state | `ref()` / `reactive()` |
+| Shared state between parent/child | Props + emits |
+| Shared state between unrelated components | Composable with `ref()` (lightweight) or Pinia (if complex) |
+| Persistent state | `localStorage` + `ref()` or Pinia plugin |
 
-(To be filled by the team)
+---
+
+## Anti-patterns
+
+- **Don't** use Vuex — it's the legacy Vue 2 state library
+- **Don't** use `provide/inject` for general state sharing — it's for dependency injection
+- **Don't** mutate props directly — use emits to communicate changes upward

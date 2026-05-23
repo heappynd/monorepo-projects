@@ -1,39 +1,53 @@
-# Frontend Development Guidelines
+# Frontend Development Guidelines — web1
 
-> Best practices for frontend development in this project.
+> Vue 3 + Vite conventions for the web1 app.
 
 ---
 
 ## Overview
 
-This directory contains guidelines for frontend development. Fill in each file with your project's specific conventions.
+`web1` is a **simple Vue 3 frontend app** built with Vite. It uses the Composition API with `<script setup>` syntax and has no router or state management library.
 
 ---
 
 ## Guidelines Index
 
-| Guide | Description | Status |
-|-------|-------------|--------|
-| [Directory Structure](./directory-structure.md) | Module organization and file layout | To fill |
-| [Component Guidelines](./component-guidelines.md) | Component patterns, props, composition | To fill |
-| [Hook Guidelines](./hook-guidelines.md) | Custom hooks, data fetching patterns | To fill |
-| [State Management](./state-management.md) | Local state, global state, server state | To fill |
-| [Quality Guidelines](./quality-guidelines.md) | Code standards, forbidden patterns | To fill |
-| [Type Safety](./type-safety.md) | Type patterns, validation | To fill |
+| Guide | Description |
+|-------|-------------|
+| [Directory Structure](./directory-structure.md) | File layout and organization |
+| [Component Guidelines](./component-guidelines.md) | Vue 3 Composition API patterns |
+| [Hook Guidelines](./hook-guidelines.md) | Composables (not applicable — no custom composables yet) |
+| [State Management](./state-management.md) | Local state with `ref` / `reactive` |
+| [Quality Guidelines](./quality-guidelines.md) | Linting and code standards |
+| [Type Safety](./type-safety.md) | TypeScript in Vue components |
 
 ---
 
-## How to Fill These Guidelines
+## Tech Stack
 
-For each guideline file:
-
-1. Document your project's **actual conventions** (not ideals)
-2. Include **code examples** from your codebase
-3. List **forbidden patterns** and why
-4. Add **common mistakes** your team has made
-
-The goal is to help AI assistants and new team members understand how YOUR project works.
+| Layer | Technology | Version |
+|-------|-----------|---------|
+| Framework | Vue 3 | ^3.5.34 |
+| Build Tool | Vite | ^8.0.12 |
+| Language | TypeScript | ~6.0.2 |
+| Type Checking | vue-tsc | ^3.2.8 |
+| Linting | @repo/eslint-config | workspace:* |
+| Package Manager | pnpm | 10.0.0 |
 
 ---
 
-**Language**: All documentation should be written in **English**.
+## Quick Commands
+
+```bash
+# Development
+pnpm --filter web1 run dev
+
+# Build
+pnpm --filter web1 run build
+
+# Type check
+pnpm --filter web1 run check-types
+
+# Lint
+pnpm --filter web1 run lint
+```

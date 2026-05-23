@@ -1,51 +1,14 @@
-# State Management
+# State Management — @repo/eslint-config
 
-> How state is managed in this project.
-
----
-
-## Overview
-
-<!--
-Document your project's state management conventions here.
-
-Questions to answer:
-- What state management solution do you use?
-- How is local vs global state decided?
-- How do you handle server state?
-- What are the patterns for derived state?
--->
-
-(To be filled by the team)
+> Not applicable for this package.
 
 ---
 
-## State Categories
+## Status
 
-<!-- Local state, global state, server state, URL state -->
+This file exists to complete the spec template but **does not apply** to the `@repo/eslint-config` package. ESLint configs do not manage state.
 
-(To be filled by the team)
+The shared ESLint config is a configuration package that provides linting rules. State management patterns are documented in each app's own spec:
 
----
-
-## When to Use Global State
-
-<!-- Criteria for promoting state to global -->
-
-(To be filled by the team)
-
----
-
-## Server State
-
-<!-- How server data is cached and synchronized -->
-
-(To be filled by the team)
-
----
-
-## Common Mistakes
-
-<!-- State management mistakes your team has made -->
-
-(To be filled by the team)
+- [web1 State Management](../../web1/frontend/state-management.md) — Local state with `ref()`
+- [web2 State Management](../../web2/frontend/state-management.md) — Pinia stores

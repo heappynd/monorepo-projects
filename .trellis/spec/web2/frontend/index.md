@@ -1,39 +1,55 @@
-# Frontend Development Guidelines
+# Frontend Development Guidelines — web2
 
-> Best practices for frontend development in this project.
+> Vue 3 + Vite + Router + Pinia conventions for the web2 app.
 
 ---
 
 ## Overview
 
-This directory contains guidelines for frontend development. Fill in each file with your project's specific conventions.
+`web2` is a **full-featured Vue 3 frontend app** with Vue Router for navigation and Pinia for state management. It follows the standard Vue project structure with views, router, stores, and components.
 
 ---
 
 ## Guidelines Index
 
-| Guide | Description | Status |
-|-------|-------------|--------|
-| [Directory Structure](./directory-structure.md) | Module organization and file layout | To fill |
-| [Component Guidelines](./component-guidelines.md) | Component patterns, props, composition | To fill |
-| [Hook Guidelines](./hook-guidelines.md) | Custom hooks, data fetching patterns | To fill |
-| [State Management](./state-management.md) | Local state, global state, server state | To fill |
-| [Quality Guidelines](./quality-guidelines.md) | Code standards, forbidden patterns | To fill |
-| [Type Safety](./type-safety.md) | Type patterns, validation | To fill |
+| Guide | Description |
+|-------|-------------|
+| [Directory Structure](./directory-structure.md) | File layout with views, router, stores |
+| [Component Guidelines](./component-guidelines.md) | Vue 3 Composition API patterns |
+| [Hook Guidelines](./hook-guidelines.md) | Composables for shared logic |
+| [State Management](./state-management.md) | Pinia store patterns |
+| [Quality Guidelines](./quality-guidelines.md) | Linting and code standards |
+| [Type Safety](./type-safety.md) | TypeScript in Vue components |
 
 ---
 
-## How to Fill These Guidelines
+## Tech Stack
 
-For each guideline file:
-
-1. Document your project's **actual conventions** (not ideals)
-2. Include **code examples** from your codebase
-3. List **forbidden patterns** and why
-4. Add **common mistakes** your team has made
-
-The goal is to help AI assistants and new team members understand how YOUR project works.
+| Layer | Technology | Version |
+|-------|-----------|---------|
+| Framework | Vue 3 | ^3.5.32 |
+| Build Tool | Vite | ^8.0.8 |
+| Router | Vue Router | ^5.0.4 |
+| State | Pinia | ^3.0.4 |
+| Language | TypeScript | ~6.0.0 |
+| Type Checking | vue-tsc | ^3.2.6 |
+| Linting | @repo/eslint-config | workspace:* |
+| Package Manager | pnpm | 10.0.0 |
 
 ---
 
-**Language**: All documentation should be written in **English**.
+## Quick Commands
+
+```bash
+# Development
+pnpm --filter web2 run dev
+
+# Build
+pnpm --filter web2 run build
+
+# Type check
+pnpm --filter web2 run check-types
+
+# Lint
+pnpm --filter web2 run lint
+```
